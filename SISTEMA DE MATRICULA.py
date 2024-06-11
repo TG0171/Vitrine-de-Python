@@ -1,5 +1,12 @@
 # PROGRAMA DE CADASTRO DE ALUNOS - TESTE
 
+# IMPORTANDO A DATA ATUAL
+from datetime import datetime, timezone
+
+# Obtenção da data atual e formatação
+data_e_hora_atuais = datetime.now() 
+data_formatada = data_e_hora_atuais.strftime("%d/%m/%Y %H:%M:%S")
+
 # LOGIN DE FUNCIONÁRIO
 print("******** FUNDAÇÃO RUBEN BERTA ********")
 login = input("Insira a sua credencial de acesso: ")
@@ -12,65 +19,71 @@ else:
     print("ACESSO NEGADO!")
     exit()
 
-curso = ""  # Variável global para armazenar o curso escolhido
-unidade = ""  # Variável global para armazenar a unidade escolhida
+curso_escolhido = ""
+unidade_escolhida = ""
 
-def cadastro_curso():
-    global curso
+def cadastrar_curso():
+    global curso_escolhido
     print("******** CURSOS DISPONÍVEIS ********")
-    print("Programação em Python [01]")
-    print("Programação Front-End [02]")
-    print("Pacote Office [03]")
-    print("Canva Profissional [04]")
-    cadastro_curso = input("Digite o curso desejado: ")
-    if cadastro_curso == "01":
-        curso = "Programação em Python"
-    elif cadastro_curso == "02":
-        curso = "Programação Front-End"
-    elif cadastro_curso == "03":
-        curso = "Pacote Office"
-    elif cadastro_curso == "04":
-        curso = "Canva Profissional"
-    else:
-        print("Escolha uma opção válida!")
+    cursos_disponiveis = {
+        "01": "Programação em Python",
+        "02": "Programação Front-End",
+        "03": "Pacote Office",
+        "04": "Canva Profissional"
+    }
+    for codigo, curso in cursos_disponiveis.items():
+        print(f"{curso} [{codigo}]")
+    while True:
+        codigo_curso = input("Digite o código do curso desejado: ")
+        if codigo_curso in cursos_disponiveis:
+            curso_escolhido = cursos_disponiveis[codigo_curso]
+            break
+        else:
+            print("Escolha uma opção válida!")
 
-def cadastro_unidade():
-    global unidade
+def cadastrar_unidade():
+    global unidade_escolhida
     print("******** UNIDADES FUNDAÇÃO RUBEN BERTA ********")
-    print("Unidade Centro [01]")
-    print("Unidade Jacarecanga [02]")
-    print("Unidade Parangaba [03]")
-    cadastro_unidade = input("Digite a unidade escolhida: ")
-    if cadastro_unidade == "01":
-        unidade = "Centro"
-    elif cadastro_unidade == "02":
-        unidade = "Jacarecanga"
-    elif cadastro_unidade == "03":
-        unidade = "Parangaba"
-    else:
-        print("Escolha uma opção válida!")
+    unidades_disponiveis = {
+        "01": "Centro",
+        "02": "Jacarecanga",
+        "03": "Parangaba"
+    }
+    for codigo, unidade in unidades_disponiveis.items():
+        print(f"{unidade} [{codigo}]")
+    while True:
+        codigo_unidade = input("Digite o código da unidade escolhida: ")
+        if codigo_unidade in unidades_disponiveis:
+            unidade_escolhida = unidades_disponiveis[codigo_unidade]
+            break
+        else:
+            print("Escolha uma opção válida!")
 
 def cadastrar_aluno():
-    global curso, unidade
+    global curso_escolhido, unidade_escolhida
     nome = input("Insira o nome do aluno: ")
     cpf = input("Insira o CPF do aluno: ")
-    data = input("Digite a data de hoje: ")
     endereco = input("Insira o endereço do aluno: ")
     email = input("Insira o e-mail do aluno: ")
     telefone = input("Insira o número de telefone do aluno: ")
-    idade = int(input("Insira a idade do aluno: "))
-    if 15 <= idade <= 29:
-        print(f"Aluno {nome} matriculado com sucesso!")
-        print(f"O aluno {nome} foi matriculado com sucesso no dia {data} pelo (a) funcionário (a) {login} no curso de {curso} na unidade {unidade}.")
-    else:
-        print(f"Aluno {nome} não pôde ser matriculado devido à idade não permitida.")
+    while True:
+        try:
+            idade = int(input("Insira a idade do aluno: "))
+            if 15 <= idade <= 29:
+                print(f"Aluno {nome} matriculado com sucesso!")
+                print(f"O aluno {nome} foi matriculado com sucesso em {data_formatada} pelo funcionário {login} no curso de {curso_escolhido} na unidade {unidade_escolhida}.")
+                break
+            else:
+                print(f"Aluno {nome} não pôde ser matriculado devido à idade não permitida.")
+        except ValueError:
+            print("Por favor, insira uma idade válida.")
 
 # FUNÇÃO PRINCIPAL
 def main():
-    global curso, unidade
+    global curso_escolhido, unidade_escolhida
     while True:
-        cadastro_curso()
-        cadastro_unidade()
+        cadastrar_curso()
+        cadastrar_unidade()
         cadastrar_aluno()
         continuar = input("Deseja cadastrar outro aluno? (s/n): ").lower()
         if continuar != 's':
